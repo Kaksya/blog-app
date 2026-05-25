@@ -1,11 +1,511 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Blogs</title>
+   <title>MyBlog</title>
+
+   <style>
+      * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+      }
+
+      body {
+         font-family: Arial, sans-serif;
+         background: #f4f6f8;
+         color: #222;
+      }
+
+      /* Navbar */
+      .navbar {
+         background: white;
+         padding: 18px 60px;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         border-bottom: 1px solid #ddd;
+      }
+
+      .logo a {
+         text-decoration: none;
+         color: #111827;
+         font-size: 28px;
+         font-weight: bold;
+      }
+
+      .nav-links a {
+         text-decoration: none;
+         color: #222;
+         margin-left: 25px;
+         font-weight: bold;
+      }
+
+      .nav-links a:hover {
+         color: #2563eb;
+      }
+
+      /* Main Container */
+      .container {
+         width: 85%;
+         margin: 40px auto;
+         min-height: 70vh;
+      }
+
+      /* Top Section */
+      .top-section {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 30px;
+      }
+
+      .page-title {
+         font-size: 36px;
+         color: #111827;
+      }
+
+      .add-blog-btn {
+         background: #16a34a;
+         color: white;
+         padding: 11px 18px;
+         border-radius: 8px;
+         text-decoration: none;
+         font-weight: bold;
+      }
+
+      .add-blog-btn:hover {
+         background: #15803d;
+      }
+
+      /* Blog Grid */
+      .blog-grid {
+         display: grid;
+         grid-template-columns: repeat(3, 1fr);
+         gap: 25px;
+      }
+
+      .blog-card {
+         background: white;
+         border-radius: 14px;
+         overflow: hidden;
+         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+         transition: 0.3s ease;
+      }
+
+      .blog-card:hover {
+         transform: translateY(-5px);
+      }
+
+      .blog-img {
+         width: 100%;
+         height: 190px;
+         object-fit: cover;
+      }
+
+      .no-image {
+         width: 100%;
+         height: 190px;
+         background: #e5e7eb;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         color: #666;
+         font-weight: bold;
+      }
+
+      .blog-card-content {
+         padding: 20px;
+      }
+
+      .blog-card-content h2 {
+         font-size: 22px;
+         margin-bottom: 10px;
+         color: #111827;
+      }
+
+      .date {
+         color: #777;
+         font-size: 14px;
+         margin-bottom: 12px;
+      }
+
+      .blog-preview {
+         color: #444;
+         line-height: 1.6;
+      }
+
+      .card-bottom {
+         margin-top: 18px;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+
+      .views {
+         font-size: 14px;
+         color: #555;
+         font-weight: bold;
+      }
+
+      .read-btn,
+      .back-btn {
+         background: #2563eb;
+         color: white;
+         padding: 9px 14px;
+         border-radius: 6px;
+         text-decoration: none;
+         font-size: 14px;
+         display: inline-block;
+      }
+
+      .read-btn:hover,
+      .back-btn:hover {
+         background: #1d4ed8;
+      }
+
+      /* Form */
+      .form-box,
+      .detail-card,
+      .about-box {
+         background: white;
+         padding: 35px;
+         border-radius: 14px;
+         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+         max-width: 850px;
+         margin: auto;
+      }
+
+      .form-box h1,
+      .about-box h1 {
+         text-align: center;
+         margin-bottom: 25px;
+         color: #111827;
+      }
+
+      .form-box label {
+         display: block;
+         margin-top: 15px;
+         margin-bottom: 6px;
+         font-weight: bold;
+      }
+
+      .form-control {
+         width: 100%;
+         padding: 12px;
+         border: 1px solid #ccc;
+         border-radius: 8px;
+         font-size: 15px;
+      }
+
+      .submit-btn {
+         margin-top: 22px;
+         background: #2563eb;
+         color: white;
+         padding: 12px 18px;
+         border: none;
+         border-radius: 8px;
+         cursor: pointer;
+         font-size: 16px;
+         font-weight: bold;
+      }
+
+      .submit-btn:hover {
+         background: #1d4ed8;
+      }
+
+      /* Detail Page */
+      .detail-card h1 {
+         font-size: 36px;
+         margin-bottom: 10px;
+         color: #111827;
+      }
+
+      .detail-img {
+         width: 100%;
+         max-height: 430px;
+         object-fit: cover;
+         border-radius: 12px;
+         margin: 20px 0;
+      }
+
+      .detail-video {
+         width: 100%;
+         border-radius: 12px;
+         margin: 20px 0;
+      }
+
+      .content {
+         margin-top: 25px;
+         line-height: 1.8;
+         font-size: 16px;
+      }
+
+      /* About */
+      .about-box p {
+         line-height: 1.8;
+         font-size: 16px;
+      }
+
+      /* Footer */
+      .footer {
+         background: #111827;
+         color: white;
+         text-align: center;
+         padding: 30px;
+         margin-top: 40px;
+      }
+
+      .footer p {
+         margin: 10px 0;
+         color: #ccc;
+      }
+
+      .socials a {
+         color: white;
+         text-decoration: none;
+         margin: 0 10px;
+         font-weight: bold;
+      }
+
+      .socials a:hover {
+         color: #60a5fa;
+      }
+
+      /* Responsive */
+      @media screen and (max-width: 900px) {
+         .blog-grid {
+            grid-template-columns: repeat(2, 1fr);
+         }
+
+         .navbar {
+            padding: 18px 30px;
+         }
+      }
+
+      @media screen and (max-width: 600px) {
+         .blog-grid {
+            grid-template-columns: 1fr;
+         }
+
+         .top-section {
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start;
+         }
+
+         .navbar {
+            flex-direction: column;
+            gap: 15px;
+         }
+
+         .nav-links a {
+            margin-left: 12px;
+            margin-right: 12px;
+         }
+
+         .page-title {
+            font-size: 30px;
+         }
+
+         .container {
+            width: 92%;
+         }
+      }
+   </style>
 </head>
+
 <body>
-   
+
+   <!-- Navbar -->
+   <nav class="navbar">
+      <div class="logo">
+         <a href="{% url 'blog_list' %}">MyBlog</a>
+      </div>
+
+      <div class="nav-links">
+         <a href="{% url 'blog_list' %}">Blog</a>
+         <a href="{% url 'about' %}">About Me</a>
+      </div>
+   </nav>
+
+   <!-- Main Content -->
+   <main class="container">
+
+      <!-- Blog List Page -->
+      {% if page == 'list' %}
+
+      <div class="top-section">
+         <h1 class="page-title">Latest Blog Posts</h1>
+
+         <a href="{% url 'add_blog' %}" class="add-blog-btn">
+            + Add Blog
+         </a>
+      </div>
+
+      <div class="blog-grid">
+
+         {% for post in posts %}
+         <div class="blog-card">
+
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class="blog-img" alt="Blog image">
+            {% else %}
+            <div class="no-image">
+               No Image
+            </div>
+            {% endif %}
+
+            <div class="blog-card-content">
+               <h2>{{ post.title }}</h2>
+
+               <p class="date">
+                  Posted on {{ post.created_at|date:"F d, Y" }}
+               </p>
+
+               <p class="blog-preview">
+                  {{ post.content|truncatewords:22 }}
+               </p>
+
+               <div class="card-bottom">
+                  <p class="views">
+                     👁 {{ post.views }} views
+                  </p>
+
+                  <a href="{% url 'blog_detail' post.id %}" class="read-btn">
+                     Read More
+                  </a>
+               </div>
+            </div>
+
+         </div>
+         {% empty %}
+         <p>No blog posts available.</p>
+         {% endfor %}
+
+      </div>
+
+      <!-- Add Blog Page -->
+      {% elif page == 'add' %}
+
+      <div class="form-box">
+         <h1>Add New Blog</h1>
+
+         <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Blog Title</label>
+            <input type="text" name="title" placeholder="Enter blog title" class="form-control" required>
+
+            <label>Blog Content</label>
+            <textarea name="content" placeholder="Write full blog content" class="form-control" rows="8"
+               required></textarea>
+
+            <label>Blog Image</label>
+            <input type="file" name="image" class="form-control" accept="image/*">
+
+            <label>Blog Video</label>
+            <input type="file" name="video" class="form-control" accept="video/*">
+
+            <button type="submit" class="submit-btn">
+               Publish Blog
+            </button>
+         </form>
+      </div>
+
+      <!-- Blog Detail Page -->
+      {% elif page == 'detail' %}
+
+      {% if post %}
+      <div class="detail-card">
+         <h1>{{ post.title }}</h1>
+
+         <p class="date">
+            Posted on {{ post.created_at|date:"F d, Y" }}
+         </p>
+
+         <p class="views">
+            👁 {{ post.views }} views
+         </p>
+
+         {% if post.image %}
+         <img src="{{ post.image.url }}" class="detail-img" alt="Blog image">
+         {% endif %}
+
+         {% if post.video %}
+         <video controls class="detail-video">
+            <source src="{{ post.video.url }}">
+            Your browser does not support the video tag.
+         </video>
+         {% endif %}
+
+         <div class="content">
+            {{ post.content|linebreaks }}
+         </div>
+
+         <br>
+
+         <a href="{% url 'blog_list' %}" class="back-btn">
+            Back to Blogs
+         </a>
+      </div>
+
+      {% else %}
+      <div class="detail-card">
+         <h1>Blog Not Found</h1>
+         <p>The blog post does not exist.</p>
+
+         <br>
+
+         <a href="{% url 'blog_list' %}" class="back-btn">
+            Back to Blogs
+         </a>
+      </div>
+      {% endif %}
+
+      <!-- About Me Page -->
+      {% elif page == 'about' %}
+
+      <div class="about-box">
+         <h1>About Me</h1>
+
+         <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            I enjoy writing blogs, sharing experiences, and posting useful ideas.
+            This section can be edited later with your own personal information,
+            background, hobbies, and social links.
+         </p>
+      </div>
+
+      {% endif %}
+
+   </main>
+
+   <!-- Footer -->
+   <footer class="footer">
+      <h3>MyBlog</h3>
+
+      <div class="socials">
+         <a href="https://www.facebook.com/sameer.tmg.34" target="_blank" rel="noopener noreferrer">
+            Facebook
+         </a>
+
+         <a href="https://www.instagram.com/kaksya_a/" target="_blank" rel="noopener noreferrer">
+            Instagram
+         </a>
+
+         <a href="https://www.linkedin.com/in/realsameertamang/" target="_blank" rel="noopener noreferrer">
+            LinkedIn
+         </a>
+
+         <a href="https://github.com/Kaksya" target="_blank" rel="noopener noreferrer">
+            GitHub
+         </a>
+      </div>
+   </footer>
+
 </body>
+
 </html>
