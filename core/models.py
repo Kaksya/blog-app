@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class Blog(models.Model):
@@ -9,4 +10,5 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
+
 
